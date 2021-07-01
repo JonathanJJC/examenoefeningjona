@@ -1,0 +1,254 @@
+body{
+  margin: 0px;
+  background-color: #dbdbdb;
+}
+
+input[type=text], input[type=email], input[type=password] {
+  width: 50%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  margin-left: 25%;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+label, h3{
+  
+  margin-left: 25%;
+}
+
+.submit {
+  width: 50%;
+  background-color: #5886AF;
+  color: white;
+  margin: 8px 0;
+  padding: 14px 20px;
+  margin-left: 25%;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.button {
+  width: 50%;
+  background-color: #f4bd4e;
+  color: white;
+  padding: 14px 20px;
+  margin-left: 25%;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.submit:hover {
+  background-color: #547fa5;
+}
+
+.button:hover {
+  background-color: #eab448;
+}
+
+/*div {
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  padding: 20px;
+}*/
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #262E41;
+}
+
+li {
+  float: left;
+}
+
+
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li a:hover:not(.active) {
+  background-color: #202635;
+}
+
+
+.active {
+  background-color: #56658D;
+}
+
+
+
+.error{
+  width: 50%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  margin-left: 25%;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  background-color: #bc5858;
+  text-align: center;
+}
+
+.succes{
+  width: 50%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  margin-left: 25%;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  background-color: #19b77b;
+}
+
+.table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+
+.table td, .table th {
+  border: 1px solid #dbdbdb;
+  padding: 15px;
+
+}
+
+.table tr:nth-child(even){background-color: #f2f2f2;}
+
+.table tr:hover {background-color: #ddd;}
+
+.table th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #56658D;
+  color: white;
+
+  }
+
+div.polaroid {
+  width: 40%;
+  background-color: white;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  margin-left: 30%;
+}
+
+img {
+  width: 100%;
+  height: auto;
+}
+
+div.container {
+  text-align: center;
+  padding: 10px 20px;
+}
+
+div.gallery {
+  background-color: white;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+div.gallery:hover {
+  
+}
+
+div.gallery img {
+  float: right;
+  max-width: 100%;
+  height: 250px;
+}
+
+div.desc {
+ padding-left: 15px;
+ padding-right: 5px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.responsive {
+  padding: 10px;
+  float: left;
+  width: 24.99999%;
+  height: 24.99%;
+}
+
+@media only screen and (max-width: 700px) {
+  .responsive {
+    width: 49.99999%;
+    margin: 6px 0;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  .responsive {
+    width: 100%;
+  }
+}
+
+.clearfix:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.user_info{
+  float: left;
+  padding: 15px;
+  width: 25%;
+  height: 800px;
+  background-color: white;
+}
+
+.upload{
+width: 50%;
+  background-color: #5886AF;
+  color: white;
+  margin: 8px 0;
+  padding: 14px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+
+}
+
+ .delete {
+  width: 40%;
+  background-color:indianred; 
+  color: white;
+  margin: 8px 0;
+  padding: 14px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  }
+
+.delete:hover{background-color: #aa5252;}
+
+ .view {
+  float: left;
+  width: 40%;
+  background-color:#2e98c9; 
+  color: white;
+  margin: 8px 0;
+  padding: 14px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  }
+
+.view:hover{background-color: #3891b7;}
