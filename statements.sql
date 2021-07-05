@@ -22,6 +22,15 @@ CREATE TABLE gebruiker(
     PRIMARY KEY(id)
 );
 
+CREATE TABLE vrienden(
+    vriend_A INT,
+    vriend_B INT,
+    is_bevestigd boolean,
+    -- keys
+    FOREIGN KEY(vriend_A)REFERENCES gebruiker(id),
+    FOREIGN KEY(vriend_B)REFERENCES gebruiker(id)
+);
+
 CREATE TABLE groep(
     id INT NOT NULL AUTO_INCREMENT,
     naam VARCHAR(255) NOT NULL,
@@ -69,6 +78,7 @@ CREATE TABLE image(
     id INT NOT NULL,
     Filename VARCHAR(255) NOT NULL,
     -- KEYS
-    PRIMARY KEY(id)
+    PRIMARY KEY(id),
+    FOREIGN KEY(id) REFERENCES gebruiker(id)
 );
 

@@ -59,6 +59,8 @@ class database {
 
 	//<-------------------------(inserts-end)------------------------->
 
+	//<-------------------------(signup-login)------------------------->
+
 	public function login($email, $wachtwoord){
 		$sql = "SELECT * FROM gebruiker WHERE email = :email";
 
@@ -77,6 +79,7 @@ class database {
             $_SESSION['id'] = $result['id'];
             $_SESSION['email'] = $result['email'];
             $_SESSION['voornaam'] = $result['voornaam'];
+            $_SESSION['achternaam'] = $result['achternaam'];
             $_SESSION['is_admin'] = $result['is_admin'];
             $_SESSION['loggedin'] = true;
 
@@ -103,6 +106,8 @@ class database {
 		'updated_at' => date('Y-m-d H:i:s')
 		]); 
 	}
+
+	//<-------------------------(signup-login-end)------------------------->
 
 	public function select($statement, $named_placeholder){
 
@@ -146,10 +151,33 @@ class database {
 
 		$stmt = $this->dbh->prepare($sql);
 		$stmt->execute($id);
-		header("refresh:0;user_details.php");
+		header("refresh:0;user_page.php");
 		}
 
 	//<-------------------------(deletes-end)------------------------->
+
+	public function decline_vriend($vriend_A, $vriend_B){
+		$sql = "DELETE FROM vrienden WHERE vriend_A = :vriend_A AND vriend_B = :vriend_B";
+
+		$stmt = $this->dbh->prepare($sql);
+		$stmt->execute([
+		'vriend_A' => $vriend_A, 
+		'vriend_B' => $vriend_B
+		]);
+		header("refresh:0;");
+		}
+
+		public function accept_vriend($vriend_A, $vriend_B){
+		$sql = "UPDATE vrienden SET is_bevestigd = :is_bevestigd WHERE vriend_A = :vriend_A AND vriend_B = :vriend_B";
+
+		$statement = $this->dbh->prepare($sql);
+		$statement->execute([
+		'vriend_A' => $vriend_A, 
+		'vriend_B' => $vriend_B,
+		'is_bevestigd' => TRUE
+		]);
+		}
+		
 }
 
 

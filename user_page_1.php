@@ -6,14 +6,73 @@ $id = $_SESSION['id'];
 
 $db = new database();
 
-$results = $db->select("SELECT post.id, post.inhoud, gebruiker.voornaam, gebruiker.achternaam, gebruiker.email, gebruiker.created_at FROM post INNER JOIN gebruiker ON post.poster_id = gebruiker.id WHERE post.poster_id = :id", [':id' => $id]);
-  
-$columns = array_keys($results[0]);  
-$row_data = array_values($results);
+$msg = "";
+if (isset($_POST['upload'])) {
 
-foreach ($row_data as $data) {
-  // code...
-}
+  if(empty($_FILES['uploadfile']['tmp_name']) || !is_uploaded_file($_FILES['uploadfile']['tmp_name']))
+{
+    $msg = "Failed to upload image";
+}else{
+
+    $db = new database();
+
+    $filename = $_FILES["uploadfile"]["name"];
+    $tempname = $_FILES["uploadfile"]["tmp_name"];   
+    $folder = "image/".$filename;
+        
+        // Get all the submitted data from the form
+        // $sql = "INSERT INTO image (filename) VALUES ('$filename')";
+ 
+        // Execute query
+        $db->insert_image($id, $filename);
+         
+        // Now let's move the uploaded image into the folder: image
+        if (move_uploaded_file($tempname, $folder))  {
+            $msg = "Image uploaded successfully";
+        }else{
+            $msg = "Failed to upload image";
+      }
+    }      
+  }
+
+$vrienden = $db->select("SELECT vrienden.vriend_A, gebruiker.voornaam, gebruiker.achternaam 
+  from vrienden
+  INNER JOIN gebruiker
+  ON vrienden.vriend_A = gebruiker.id 
+  WHERE vriend_B = :id ",[':id' => $id]);
+
+$row_data_vrienden = array_values($vrienden);
+foreach ($row_data_vrienden as $data_vrieden){}
+
+$profile = $db->select("SELECT gebruiker.id, gebruiker.voornaam, gebruiker.achternaam, gebruiker.email, gebruiker.created_at, image.Filename, groep.naam, post.inhoud, groepsleden.lid_id
+  FROM gebruiker
+  LEFT JOIN image
+  ON gebruiker.id = image.id 
+  LEFT JOIN post
+  ON gebruiker.id = post.poster_id 
+  LEFT JOIN groepsleden
+  ON gebruiker.id = groepsleden.lid_id
+  LEFT JOIN groep
+  ON groepsleden.groeps_id = groep.id
+  WHERE gebruiker.id = :id", [':id' => $id]);
+
+$columns = array_keys($profile[0]);  
+$row_data = array_values($profile);
+
+foreach ($row_data as $data) {}
+
+$followers = $db->select("SELECT post.id ,post.poster_id, post.inhoud, gebruiker.voornaam, gebruiker.achternaam, image.Filename 
+  FROM post 
+  left JOIN gebruiker ON post.poster_id = gebruiker.id
+  left JOIN image
+  ON post.poster_id = image.id
+  WHERE gebruiker.id = :id", [':id' => $id]);
+
+$row_data_followers = array_values($followers);
+
+foreach ($row_data_followers as $data_follower){}
+
+$deletecheck =  $data_follower['poster_id'];
 
  ?>
 <!DOCTYPE html>
@@ -47,7 +106,7 @@ html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
     </div>
   </div>
   <a href="#" class="w3-bar-item w3-button w3-hide-small w3-right w3-padding-large w3-hover-white" title="My Account">
-    <img src="/w3images/avatar2.png" class="w3-circle" style="height:23px;width:23px" alt="Avatar">
+   <img src="image/<?php echo $data["Filename"];?>" class="w3-circle" style="height:23px;width:23px" alt="Avatar">
   </a>
  </div>
 </div>
@@ -70,11 +129,11 @@ html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
       <div class="w3-card w3-round w3-white">
         <div class="w3-container">
          <h4 class="w3-center">My Profile</h4>
-         <p class="w3-center"><img src="/w3images/avatar3.png" class="w3-circle" style="height:106px;width:106px" alt="Avatar"></p>
+         <p class="w3-center"><img src="image/<?php echo $data["Filename"];?>" class="w3-circle" style="max-height:106px;max-width:106px" alt="Avatar"></p>
          <hr>
-         <p><i class="fa fa-address-card-o fa-fw w3-margin-right w3-text-theme"></i> <?php echo $data["voornaam"], " ", $data["achternaam"];  ?>, Pedojager</p>
-         <p><i class="fa fa-home fa-fw w3-margin-right w3-text-theme"></i> London, UK</p>
-         <p><i class="fa fa-birthday-cake fa-fw w3-margin-right w3-text-theme"></i> April 1, 1988</p>
+         <p><i class="fa fa-address-card fa-fw w3-margin-right w3-text-theme"></i><?php echo $data["voornaam"], " ", $data["achternaam"]?></p>
+         <p><i class="fa fa-envelope fa-fw w3-margin-right w3-text-theme"></i><?php echo $data["email"]?></p>
+         <p><i class="fa fa-calendar fa-fw w3-margin-right w3-text-theme"></i>Lid sinds: <?php echo $data["created_at"]?></p>
         </div>
       </div>
       <br>
@@ -84,7 +143,7 @@ html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
         <div class="w3-white">
           <button onclick="myFunction('Demo1')" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-circle-o-notch fa-fw w3-margin-right"></i> My Groups</button>
           <div id="Demo1" class="w3-hide w3-container">
-            <p>Some text..</p>
+            <p><?php  echo $data["naam"]?></p>
           </div>
           <button onclick="myFunction('Demo2')" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-calendar-check-o fa-fw w3-margin-right"></i> My Events</button>
           <div id="Demo2" class="w3-hide w3-container">
@@ -94,27 +153,18 @@ html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
           <div id="Demo3" class="w3-hide w3-container">
          <div class="w3-row-padding">
          <br>
-           <div class="w3-half">
-             <img src="/w3images/lights.jpg" style="width:100%" class="w3-margin-bottom">
-           </div>
-           <div class="w3-half">
-             <img src="/w3images/nature.jpg" style="width:100%" class="w3-margin-bottom">
-           </div>
-           <div class="w3-half">
-             <img src="/w3images/mountains.jpg" style="width:100%" class="w3-margin-bottom">
-           </div>
-           <div class="w3-half">
-             <img src="/w3images/forest.jpg" style="width:100%" class="w3-margin-bottom">
-           </div>
-           <div class="w3-half">
-             <img src="/w3images/nature.jpg" style="width:100%" class="w3-margin-bottom">
-           </div>
-           <div class="w3-half">
-             <img src="/w3images/snow.jpg" style="width:100%" class="w3-margin-bottom">
-           </div>
-         </div>
+          
+          <?php
+            foreach ($row_data as $data) { 
+              echo "<div class=\"w3-half\">";
+              echo "<img src=image/$data[inhoud] style=width:100% class=\"w3-margin-bottom\">";
+              echo "</div>";
+            }
+            ?>
+            
           </div>
-        </div>      
+        </div>
+      </div>      
       </div>
       <br>
       
@@ -159,32 +209,44 @@ html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
           <div class="w3-card w3-round w3-white">
             <div class="w3-container w3-padding">
               <h6 class="w3-opacity">Social Media template by w3.css</h6>
-              <p contenteditable="true" class="w3-border w3-padding">Status: Feeling Blue</p>
-              <button type="button" class="w3-button w3-theme"><i class="fa fa-pencil"></i>  Post</button> 
+              <!-- <p contenteditable="true" class="w3-border w3-padding">Status: Feeling Blue</p> -->
+                <form method="POST" action="" enctype="multipart/form-data">
+                  <p contenteditable="true" class="w3-border w3-padding"><input type="file" name="uploadfile" value="" /><br></p>
+                  <button type="submit" name="upload" class="w3-button w3-theme"><i class="fa fa-pencil"></i>  Post</button>
+                  <!-- <button type="button" class="w3-button w3-theme"><i class="fa fa-pencil"></i>  Post</button> -->
+                </form>
             </div>
           </div>
         </div>
       </div>
-      
+
+               
+       <?php
+        foreach ($row_data_followers as $data_follower) {
+          echo "<div class=\"w3-container w3-card w3-white w3-round w3-margin\"><br>";
+          echo "<img src=image/$data_follower[Filename] alt=Avatar class=\"w3-left w3-circle w3-margin-right\" style=width:60px;height:60px;>";
+        echo "<span class=\"w3-right w3-opacity\">32 min</span>";
+        echo "<h4>".$data_follower["voornaam"], " ", $data_follower["achternaam"]."</h4><br>";
+        echo "<hr class=\"w3-clear\">";
+        echo "<p>Have you seen this?</p>";
+        echo "<img src=image/$data_follower[inhoud] style=width:100% class=\"w3-margin-bottom\">";
+        echo "<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>";
+        echo "<button type=button class=\"w3-button w3-theme-d1 w3-margin-bottom\"><i class=\"fa fa-thumbs-up\"></i>  Like</button>";
+        echo "<button type=button class=\"w3-button w3-theme-d2 w3-margin-bottom\"><i class=\"fa fa-comment\"></i>  Comment</button>";
+
+        // if ($data_follower['poster_id'] === $data['id']) {
+        //   echo "<a href=delete_post.php?id=$data_follower[id]><button type=button class=\"w3-button w3-red w3-margin-bottom\"><i class=\"fa fa-comment\"></i>  Delete</button>";
+        
+        // }
+    echo "</div>";
+        }
+        
+    ?>
+
+     
+    
       <div class="w3-container w3-card w3-white w3-round w3-margin"><br>
-        <img src="/w3images/avatar2.png" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:60px">
-        <span class="w3-right w3-opacity">1 min</span>
-        <h4>John Doe</h4><br>
-        <hr class="w3-clear">
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-          <div class="w3-row-padding" style="margin:0 -16px">
-            <div class="w3-half">
-              <img src="/w3images/lights.jpg" style="width:100%" alt="Northern Lights" class="w3-margin-bottom">
-            </div>
-            <div class="w3-half">
-              <img src="/w3images/nature.jpg" style="width:100%" alt="Nature" class="w3-margin-bottom">
-          </div>
-        </div>
-        <button type="button" class="w3-button w3-theme-d1 w3-margin-bottom"><i class="fa fa-thumbs-up"></i>  Like</button> 
-        <button type="button" class="w3-button w3-theme-d2 w3-margin-bottom"><i class="fa fa-comment"></i>  Comment</button> 
-      </div>
-      
-      <div class="w3-container w3-card w3-white w3-round w3-margin"><br>
+
         <img src="/w3images/avatar5.png" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:60px">
         <span class="w3-right w3-opacity">16 min</span>
         <h4>Jane Doe</h4><br>
@@ -225,8 +287,13 @@ html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
       <div class="w3-card w3-round w3-white w3-center">
         <div class="w3-container">
           <p>Friend Request</p>
-          <img src="/w3images/avatar6.png" alt="Avatar" style="width:50%"><br>
-          <span>Jane Doe</span>
+          
+          <?php  
+            foreach ($row_data_vrienden as $data_vrienden) {
+              echo "<img src=/w3images/avatar6.png alt=\"Avatar\" style=\"width:50%\"><br>";
+              echo "<span>".$data_vrienden["voornaam"]." ".$data_vrienden["achternaam"]."</span>";
+                }
+          ?>
           <div class="w3-row w3-opacity">
             <div class="w3-half">
               <button class="w3-button w3-block w3-green w3-section" title="Accept"><i class="fa fa-check"></i></button>
