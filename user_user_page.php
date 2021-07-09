@@ -136,7 +136,8 @@ html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
 <body class="w3-theme-l5">
 
 <!-- Navbar -->
-<div class="w3-top">
+<?php include 'navbar.php' ?>
+<!-- <div class="w3-top">
  <div class="w3-bar w3-theme-d2 w3-left-align w3-large">
   <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-theme-d2" href="javascript:void(0);" onclick="openNav()"><i class="fa fa-bars"></i></a>
   <a href="#" class="w3-bar-item w3-button w3-padding-large w3-theme-d4"><i class="fa fa-home w3-margin-right"></i>Logo</a>
@@ -151,13 +152,18 @@ html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
       <a href="#" class="w3-bar-item w3-button">Jane likes your post</a>
     </div>
   </div>
+
   <a href="logout.php"><button type=button class="w3-bar-item w3-button w3-hide-small w3-right w3-padding-large w3-hover-white" style="background-color:indianred;color:white;"><i class="fa fa-sign-out"></i>  Logout</button></a>
   <a href="#" class="w3-bar-item w3-button w3-hide-small w3-right w3-padding-large w3-hover-white" title="My Account">
-   <img src="image/<?php echo $data["Filename"];?>" class="w3-circle" style="height:23px;width:23px" alt="Avatar">
+    <?php  if ($data["Filename"] == NULL) {
+                echo "<img src=image/default.png class=\"w3-circle\" style=\"height:23px;width:23px\" alt=\"Avatar\">";
+              }else{
+                echo "<img src=image/$data[Filename] class=\"w3-circle\" style=\"height:23px;width:23px\" alt=\"Avatar\">";
+              }?>
    <?php echo $_SESSION["voornaam"], " ", $_SESSION["achternaam"]?>
   </a>
  </div>
-</div>
+</div> -->
 
 <!-- Navbar on small screens -->
 <div id="navDemo" class="w3-bar-block w3-theme-d2 w3-hide w3-hide-large w3-hide-medium w3-large">
@@ -173,10 +179,13 @@ html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
   <div class="w3-row">
     <!-- Left Column -->
     <div class="w3-col m3">
+      <?php include 'profile.php';?>
       <!-- Profile -->
       <div class="w3-card w3-round w3-white">
         <div class="w3-container">
+          <h4 class="w3-center">View Profile</h4>
          <p class="w3-center">
+
          <?php  if ($data_view_profile["Filename"] == NULL) {
                 echo "<img src=image/default.png class=\"w3-circle\" style=\"max-height:106px;max-width:106px;\" alt=Avatar><br>";
               }else{
@@ -196,7 +205,11 @@ html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
         <div class="w3-white">
           <button onclick="myFunction('Demo1')" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-circle-o-notch fa-fw w3-margin-right"></i> My Groups</button>
           <div id="Demo1" class="w3-hide w3-container">
-            <p><?php  echo $data["naam"]?></p>
+            <p><?php if (empty($data_view_profile["naam"])) {
+              echo "Geen groepen";
+            }else{
+              echo $data_view_profile["naam"];
+            } ?></p>
           </div>
           <button onclick="myFunction('Demo2')" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-calendar-check-o fa-fw w3-margin-right"></i> My Events</button>
           <div id="Demo2" class="w3-hide w3-container">
@@ -205,13 +218,17 @@ html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
           <button onclick="myFunction('Demo3')" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-users fa-fw w3-margin-right"></i> My Photos</button>
           <div id="Demo3" class="w3-hide w3-container">
          <div class="w3-row-padding">
-         <br>
+         
           
           <?php
-            foreach ($row_data as $data) { 
+            foreach ($row_data_view_profile as $data_view_profile) {
+              if (empty($data_view_profile["inhoud"])) {
+                 echo "<p>Geen posts<p>";
+               }else{ 
               echo "<div class=\"w3-half\">";
-              echo "<img src=image/$data[inhoud] style=width:100% class=\"w3-margin-bottom\">";
+              echo "<img src=image/$data_view_profile[inhoud] style=width:100% class=\"w3-margin-bottom\">";
               echo "</div>";
+            }
             }
             ?>
             

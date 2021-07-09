@@ -106,6 +106,11 @@ html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
     </div>
   </div>
   <a href="#" class="w3-bar-item w3-button w3-hide-small w3-right w3-padding-large w3-hover-white" title="My Account">
+    <?php  if ($data["Filename"] == NULL) {
+                echo "<img src=image/default.png class=\"w3-circle\" style=\"max-height:106px;max-width:106px;\" alt=Avatar><br>";
+              }else{
+                echo "<img src=image/$data[Filename] class=\"w3-circle\" style=\"max-height:106px;max-width:106px;\" alt=Avatar><br>";
+              }?>
    <img src="image/<?php echo $data["Filename"];?>" class="w3-circle" style="height:23px;width:23px" alt="Avatar">
   </a>
  </div>
@@ -145,6 +150,7 @@ html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
           <div id="Demo1" class="w3-hide w3-container">
             <p><?php  echo $data["naam"]?></p>
           </div>
+          
           <button onclick="myFunction('Demo2')" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-calendar-check-o fa-fw w3-margin-right"></i> My Events</button>
           <div id="Demo2" class="w3-hide w3-container">
             <p>Some other text..</p>

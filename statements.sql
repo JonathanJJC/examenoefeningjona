@@ -58,7 +58,7 @@ CREATE TABLE post(
     created_at DATETIME NOT NULL,
     updated_at DATETIME NOT NULL,
     -- KEYS
-    PRIMARY KEY(id),
+    PRIMARY KEY(id) ON DELETE CASCADE,
     FOREIGN KEY(poster_id) REFERENCES gebruiker(id),
     FOREIGN KEY(groep_id) REFERENCES groep(id)
 );
@@ -71,7 +71,7 @@ CREATE TABLE comment(
     -- KEYS
     PRIMARY KEY(id),
     FOREIGN KEY(commenter_id) REFERENCES gebruiker(id),
-    FOREIGN KEY(post_id) REFERENCES post(id)
+    FOREIGN KEY(post_id) REFERENCES post(id) ON DELETE CASCADE
 );
 
 CREATE TABLE image(

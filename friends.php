@@ -89,30 +89,7 @@ html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
 <body class="w3-theme-l5">
 
 <!-- Navbar -->
-<div class="w3-top">
- <div class="w3-bar w3-theme-d2 w3-left-align w3-large">
-  <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-theme-d2" href="javascript:void(0);" onclick="openNav()"><i class="fa fa-bars"></i></a>
-  <a href="#" class="w3-bar-item w3-button w3-padding-large w3-theme-d4"><i class="fa fa-home w3-margin-right"></i>Logo</a>
-  <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="News"><i class="fa fa-globe"></i></a>
-  <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Account Settings"><i class="fa fa-user"></i></a>
-  <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Messages"><i class="fa fa-envelope"></i></a>
-  <div class="w3-dropdown-hover w3-hide-small">
-    <button class="w3-button w3-padding-large" title="Notifications"><i class="fa fa-bell"></i><span class="w3-badge w3-right w3-small w3-green">3</span></button>     
-    <div class="w3-dropdown-content w3-card-4 w3-bar-block" style="width:300px">
-      <a href="#" class="w3-bar-item w3-button">One new friend request</a>
-      <a href="#" class="w3-bar-item w3-button">John Doe posted on your wall</a>
-      <a href="#" class="w3-bar-item w3-button">Jane likes your post</a>
-    </div>
-  </div>
-   <a href="logout.php"><button type=button class="w3-bar-item w3-button w3-hide-small w3-right w3-padding-large w3-hover-white" style="background-color:indianred;color:white;"><i class="fa fa-sign-out"></i>  Logout</button></a>
-
-  <a href="#" class="w3-bar-item w3-button w3-hide-small w3-right w3-padding-large w3-hover-white" title="My Account">
-   <img src="image/<?php echo $data["Filename"];?>" class="w3-circle" style="height:23px;width:23px" alt="Avatar">
-   <?php echo $data["voornaam"], " ", $data["achternaam"]?>
-  </a>
- </div>
- </div>
-</div>
+<?php include 'navbar.php' ?>
 
 <!-- Navbar on small screens -->
 <div id="navDemo" class="w3-bar-block w3-theme-d2 w3-hide w3-hide-large w3-hide-medium w3-large">
@@ -129,17 +106,23 @@ html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
     <!-- Left Column -->
     <div class="w3-col m3">
       <!-- Profile -->
-      <div class="w3-card w3-round w3-white">
+      <?php include 'profile.php';?>
+      <!-- <div class="w3-card w3-round w3-white">
         <div class="w3-container">
          <h4 class="w3-center">My Profile</h4>
-         <p class="w3-center"><img src="image/<?php echo $data["Filename"];?>" class="w3-circle" style="height:106px;width:106px" alt="Avatar"></p>
+         <p class="w3-center">
+            <?php  if ($data["Filename"] == NULL) {
+                echo "<img src=image/default.png class=\"w3-circle\" style=\"max-height:106px;max-width:106px;\" alt=Avatar><br>";
+              }else{
+                echo "<img src=image/$data[Filename] class=\"w3-circle\" style=\"max-height:106px;max-width:106px;\" alt=Avatar><br>";
+              }?>
          <hr>
          <p><i class="fa fa-address-card fa-fw w3-margin-right w3-text-theme"></i><?php echo $data["voornaam"], " ", $data["achternaam"]?></p>
          <p><i class="fa fa-envelope fa-fw w3-margin-right w3-text-theme"></i><?php echo $data["email"]?></p>
          <p><i class="fa fa-calendar fa-fw w3-margin-right w3-text-theme"></i>Lid sinds: <?php echo $data["created_at"]?></p>
         </div>
       </div>
-      <br>
+      <br> -->
       
       <!-- Accordion -->
       <div class="w3-card w3-round">
@@ -282,7 +265,7 @@ html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
       </div>
       <br>
 
-      <div class="w3-card w3-round w3-white w3-center">
+      <!-- <div class="w3-card w3-round w3-white w3-center">
         <div class="w3-container">
           <p>Friends:</p>
           <?php  
@@ -300,7 +283,7 @@ html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
           <p><a href="friends.php"><button class="w3-button w3-block w3-theme-l4">See all</button></a></p>
         </div>
       </div>
-      <br>
+      <br> -->
 
       
       <div class="w3-card w3-round w3-white w3-center">
