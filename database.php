@@ -83,10 +83,10 @@ class database {
             $_SESSION['is_admin'] = $result['is_admin'];
             $_SESSION['loggedin'] = true;
 
-			header("refresh:3;url=welcome.php");
-            return '<h3 class=succes>Login succesful</h3>';     
+			header("refresh:3;url=user_page.php");
+            return '<h6 style="\width:100%;padding: 12px 20px;display:inline-block;border:1px solid #ccc;border-radius:4px;box-sizing:border-box;background-color:#19b77b;"\>Login succesful</h6>';     
         }else{
-        	return "<h3 class=error>Incorrect username and/or password. Please fix your input and try again.</h3>";
+        	return '<h6 style="\width:100%;padding: 12px 20px;display:inline-block;border:1px solid #ccc;border-radius:4px;box-sizing:border-box; background-color: #bc5858;"\>Incorrect username and/or password. Please fix your input and try again.</h6>';     
         }
 	        
 	}
@@ -104,7 +104,22 @@ class database {
 		'is_admin' => FALSE,
 		'created_at' => date('Y-m-d H:i:s'),
 		'updated_at' => date('Y-m-d H:i:s')
-		]); 
+		]);
+
+		if ($statement->execute([
+			'voornaam' => $voornaam,
+			'achternaam' => $achternaam,
+			'email' => $email,
+			'wachtwoord' => $hashed_password,
+			'is_admin' => FALSE,
+			'created_at' => date('Y-m-d H:i:s'),
+			'updated_at' => date('Y-m-d H:i:s')
+
+		])) {
+		 	return '<h6 style="\width:100%;padding: 12px 20px;display:inline-block;border:1px solid #ccc;border-radius:4px;box-sizing:border-box;background-color:#19b77b;"\>Signup succesful</h6>';
+		 }else{
+		 	return '<h6 style="\width:100%;padding: 12px 20px;display:inline-block;border:1px solid #ccc;border-radius:4px;box-sizing:border-box; background-color: #bc5858;"\>Signup failed</h6>';
+		 } 
 	}
 
 	//<-------------------------(signup-login-end)------------------------->
@@ -175,6 +190,17 @@ class database {
 		'vriend_A' => $vriend_A, 
 		'vriend_B' => $vriend_B,
 		'is_bevestigd' => TRUE
+		]);
+		}
+
+		public function request($vriend_A, $vriend_B){
+		$sql = "INSERT IGNORE INTO vrienden VALUES (:vriend_A, :vriend_B, :is_bevestigd)";
+
+		$statement = $this->dbh->prepare($sql);
+		$statement->execute([
+		'vriend_A' => $vriend_A, 
+		'vriend_B' => $vriend_B,
+		'is_bevestigd' => 0
 		]);
 		}
 		

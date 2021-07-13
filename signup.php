@@ -9,11 +9,11 @@ $db = new database();
 if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['signup'])){
 
   	
-    $voornaam = trim($_POST['voornaam']);
-    $achternaam = trim($_POST['achternaam']);
-    $email = trim($_POST['email']);
-    $wachtwoord = trim($_POST['wachtwoord']);
-    $hhwachtwoord = trim($_POST['hhwachtwoord']);
+    $voornaam = htmlspecialchars(trim($_POST['voornaam']));
+    $achternaam = htmlspecialchars(trim($_POST['achternaam']));
+    $email = htmlspecialchars(trim($_POST['email']));
+    $wachtwoord = htmlspecialchars(trim($_POST['wachtwoord']));
+    $hhwachtwoord = htmlspecialchars(trim($_POST['hhwachtwoord']));
 
     if ($wachtwoord !== $hhwachtwoord) {
 

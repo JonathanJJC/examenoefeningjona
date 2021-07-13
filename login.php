@@ -8,8 +8,8 @@ $db = new database();
 
 if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login'])){
 
-    $email = trim($_POST['email']);
-    $wachtwoord = trim($_POST['wachtwoord']);
+    $email = htmlspecialchars(trim($_POST['email']));
+    $wachtwoord = htmlspecialchars(trim($_POST['wachtwoord']));
 
     $db = new database();
 
